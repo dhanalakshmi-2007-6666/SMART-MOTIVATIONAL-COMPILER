@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="/static/design.css" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Motivational Compiler</title>
+<script src="https://unpkg.com/monaco-editor@0.34.1/min/vs/loader.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h1>AI SMART COMPILER</h1>
+
+<!-- Code Editor -->
+<div id="editor"></div>
+
+<!-- Buttons -->
+<div class="buttons">
+    <button id="runBtn">Run</button>
+</div>
+
+<!-- Output Box -->
+<div id="output">
+    <h2>Output:</h2>
+    <pre id="outputText">No output yet...</pre>
+</div>
+
+<!-- Input Box -->
+<div class="input-box">
+    <h3>Program Input:</h3>
+    <textarea id="inputArea" rows="4" placeholder="Enter input here..."></textarea>
+</div>
+
+<script>
+require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.34.1/min/vs' }});
+require(['vs/editor/editor.main'], function() {
+    window.editor = monaco.editor.create(document.getElementById('editor'), {
+        value: `class Main{\n    public static void main(String[] args){\n        System.out.println("Hello, World!");\n    }\n}`,
+        language: 'java',
+        theme: 'vs-dark',
+        automaticLayout: true
+    });
+});
+
+// Run Button -> send code + input to Flask backend
+document.getElementById("runBtn").addEventListener("click", async () => {
+    const code = window.editor.getValue();
+    const userInput = document.getElementById("inputArea").value;
+    const outputText = document.getElementById("outputText");
+    const outputDiv = document.getElementById("output");
+
+    outputText.textContent = "⏳ Running...";
+    outputDiv.className = "";
+
+    try {
+        const response = await fetch("/fix-run", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ code: code, input: userInput })
+        });
+
+        const result = await response.json();
+
+        // Show program output or error directly
+        outputText.textContent = result.output || "⚠️ No output.";
+        outputText.textContent += "\n\n" + result.motivation;
+
+        // Apply styling based on success/error
+        if (result.output.toLowerCase().includes("error") || result.output.toLowerCase().includes("exception")) {
+            outputDiv.className = "error";
+        } else {
+            outputDiv.className = "success";
+        }
+
+    } catch (err) {
+        outputText.textContent = "❌ Failed to connect to server: " + err;
+        outputDiv.className = "error";
+    }
+});
+
+</script>
+</body>
+</html>
