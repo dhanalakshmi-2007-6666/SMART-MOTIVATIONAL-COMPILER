@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import random
-
 app = Flask(__name__)
-
-# 🎯 Big collection of random motivation
 ERROR_MESSAGES = [
     "💡 Errors are proof you’re trying 🚀 Keep going!",
     "✨ Mistakes are portals to discovery 🌈 Don’t stop!",
@@ -68,7 +65,6 @@ def fix_run():
     except Exception as e:
         run_output = f"❌ Error: {str(e)}"
 
-    # ✅ Pick random motivational message
     if "error" in run_output.lower() or "exception" in run_output.lower():
         motivation = random.choice(ERROR_MESSAGES)
     else:
