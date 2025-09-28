@@ -11,21 +11,17 @@
 <body>
 <h1>AI SMART COMPILER</h1>
 
-<!-- Code Editor -->
 <div id="editor"></div>
 
-<!-- Buttons -->
 <div class="buttons">
     <button id="runBtn">Run</button>
 </div>
 
-<!-- Output Box -->
 <div id="output">
     <h2>Output:</h2>
     <pre id="outputText">No output yet...</pre>
 </div>
 
-<!-- Input Box -->
 <div class="input-box">
     <h3>Program Input:</h3>
     <textarea id="inputArea" rows="4" placeholder="Enter input here..."></textarea>
@@ -41,8 +37,6 @@ require(['vs/editor/editor.main'], function() {
         automaticLayout: true
     });
 });
-
-// Run Button -> send code + input to Flask backend
 document.getElementById("runBtn").addEventListener("click", async () => {
     const code = window.editor.getValue();
     const userInput = document.getElementById("inputArea").value;
@@ -62,12 +56,9 @@ document.getElementById("runBtn").addEventListener("click", async () => {
         });
 
         const result = await response.json();
-
-        // Show program output or error directly
         outputText.textContent = result.output || "⚠️ No output.";
         outputText.textContent += "\n\n" + result.motivation;
 
-        // Apply styling based on success/error
         if (result.output.toLowerCase().includes("error") || result.output.toLowerCase().includes("exception")) {
             outputDiv.className = "error";
         } else {
