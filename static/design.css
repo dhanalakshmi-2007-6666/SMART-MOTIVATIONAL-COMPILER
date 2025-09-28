@@ -6,7 +6,6 @@ body {
     padding: 20px;
 }
 
-/* Heading */
 h1 {
     text-align: center;
     color: #ff6f61;
@@ -15,7 +14,6 @@ h1 {
     text-shadow: 2px 2px 5px #000000;
 }
 
-/* Editor Container */
 #editor {
     border-radius: 10px;
     border: 2px solid #ff6f61;
@@ -23,7 +21,6 @@ h1 {
     height: 400px;
 }
 
-/* Buttons */
 .buttons {
     text-align: center;
     margin: 20px 0;
@@ -53,7 +50,6 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Output Box */
 #output {
     background: rgba(0,0,0,0.7);
     padding: 20px;
@@ -75,7 +71,6 @@ button:disabled {
     color: #dc3545;
 }
 
-/* Input Box */
 .input-box {
     margin-top: 25px;
     text-align: center;
@@ -99,13 +94,11 @@ textarea:focus {
     outline: none;
 }
 
-/* Pre inside output */
 pre {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
 
-/* Responsive */
 @media screen and (max-width: 768px) {
     textarea {
         width: 95%;
